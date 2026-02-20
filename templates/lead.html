@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="result-wrapper">
+    <div class="result-card">
+        <h2>📊 Lead Analysis</h2>
+
+        {% if result %}
+            <div class="ai-output">
+                <pre>{{ result }}</pre>
+            </div>
+        {% else %}
+            <p>No lead analysis yet.</p>
+        {% endif %}
+
+        <a href="/" class="back-btn">⬅ Back</a>
+    </div>
+</div>
+
+{% endblock %}

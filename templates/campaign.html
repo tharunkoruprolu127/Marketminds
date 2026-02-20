@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="result-wrapper">
+    <div class="result-card">
+        <h2>📢 Marketing Campaign Strategy</h2>
+
+        {% if result %}
+            <div class="ai-output">
+                <pre>{{ result }}</pre>
+            </div>
+        {% else %}
+            <p>No campaign generated yet.</p>
+        {% endif %}
+
+        <a href="/" class="back-btn">⬅ Back</a>
+    </div>
+</div>
+
+{% endblock %}
