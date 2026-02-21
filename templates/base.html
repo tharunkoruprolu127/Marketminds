@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AI Sales Strategist</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>NeuroSales AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <nav>
-        <h1>🚀 AI Sales & Marketing Assistant</h1>
-    </nav>
-    <div class="container">
-        {% block content %}{% endblock %}
-    </div>
-    <div id="loader" class="loader hidden"></div>
 
-<script src="{{ url_for('static', filename='script.js') }}"></script>
+<div class="dashboard-container">
+
+    <aside class="sidebar">
+        <h2 class="logo">NeuroSales AI</h2>
+        <nav>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/campaign">Campaign</a>
+            <a href="/pitch">Sales Pitch</a>
+            <a href="/leads">Lead Scoring</a>
+            <a href="/insights">Insights</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <h1 class="page-title">{% block title %}{% endblock %}</h1>
+        </header>
+
+        <section class="content-area">
+            {% block content %}{% endblock %}
+        </section>
+    </main>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
