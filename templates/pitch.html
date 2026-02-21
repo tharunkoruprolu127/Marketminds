@@ -1,20 +1,12 @@
 {% extends "base.html" %}
+{% block title %}Sales Pitch Generator{% endblock %}
 {% block content %}
 
-<div class="result-wrapper">
-    <div class="result-card">
-        <h2>🎯 Sales Pitch</h2>
-
-        {% if result %}
-            <div class="ai-output">
-                <pre>{{ result }}</pre>
-            </div>
-        {% else %}
-            <p>No pitch generated yet.</p>
-        {% endif %}
-
-        <a href="/" class="back-btn">⬅ Back</a>
-    </div>
+<div class="glass-panel">
+    <textarea id="pitchInput" placeholder="Describe product and audience..."></textarea>
+    <button onclick="generate('pitch','pitchInput')">Generate Pitch</button>
 </div>
+
+<div id="pitchOutput" class="card-grid"></div>
 
 {% endblock %}
