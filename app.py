@@ -1,142 +1,66 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from groq import Groq
-import os
 from dotenv import load_dotenv
+import os
 
 load_dotenv()
 
 app = Flask(__name__)
-
-# Initialize Groq client
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
 MODEL = "llama-3.3-70b-versatile"
 
+def generate_ai(prompt, system_role):
+    response = client.chat.completions.create(
+        model=MODEL,
+        messages=[
+            {"role": "system", "content": system_role},
+            {"role": "user", "content": prompt}
+        ]
+    )
+    return response.choices[0].message.content
 
-def generate_ai_response(prompt):
-    try:
-        response = client.chat.completions.create(
-            model=MODEL,
-            messages=[
-                {
-                    "role": "system",
-                    "content": """You are an expert AI Sales & Marketing Strategist.
-Provide structured professional output with headings and bullet points."""
-                },
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.7,
-            max_tokens=1000
-        )
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
 
-        return response.choices[0].message.content
-
-    except Exception as e:
-        return f"Error generating response: {str(e)}"
-
-
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-
-@app.route('/campaign', methods=['POST'])
+@app.route("/campaign")
 def campaign():
-    product = request.form.get('product')
-    target = request.form.get('target')
+    return render_template("campaign.html")
 
-    if not product or not target:
-        return render_template('campaign.html', result="Please provide all inputs.")
-
-    prompt = f"""
-    Create a complete marketing campaign for:
-    Product: {product}
-    Target Audience: {target}
-
-    Include:
-    - Campaign theme
-    - Social media strategy
-    - Email marketing plan
-    - Tagline
-    """
-
-    result = generate_ai_response(prompt)
-
-    return render_template('campaign.html', result=result)
-
-
-@app.route('/pitch', methods=['POST'])
+@app.route("/pitch")
 def pitch():
-    product = request.form.get('product')
-    audience = request.form.get('audience')
+    return render_template("pitch.html")
 
-    if not product or not audience:
-        return render_template('pitch.html', result="Please provide all inputs.")
+@app.route("/leads")
+def leads():
+    return render_template("leads.html")
 
-    prompt = f"""
-    Create a persuasive sales pitch for:
-    Product: {product}
-    Audience: {audience}
-
-    Include:
-    - Value proposition
-    - Pain points
-    - Benefits
-    - Closing statement
-    """
-
-    result = generate_ai_response(prompt)
-
-    return render_template('pitch.html', result=result)
-
-
-@app.route('/lead', methods=['POST'])
-def lead():
-    industry = request.form.get('industry')
-    behavior = request.form.get('behavior')
-
-    if not industry or not behavior:
-        return render_template('lead.html', result="Please provide all inputs.")
-
-    prompt = f"""
-    Analyze this lead:
-
-    Industry: {industry}
-    Behavior: {behavior}
-
-    Provide:
-    - Lead Score (1-100)
-    - Reasoning
-    - Recommended action
-    """
-
-    result = generate_ai_response(prompt)
-
-    return render_template('lead.html', result=result)
-
-
-@app.route('/insights', methods=['POST'])
+@app.route("/insights")
 def insights():
-    market = request.form.get('market')
+    return render_template("insights.html")
 
-    if not market:
-        return render_template('insights.html', result="Please provide market sector.")
+@app.route("/generate", methods=["POST"])
+def generate():
+    prompt = request.form["input"]
+    mode = request.form["mode"]
 
-    prompt = f"""
-    Provide detailed market analysis for:
-    {market}
+    system_prompts = {
+        "campaign": "Generate structured campaign strategy.",
+        "pitch": "Generate persuasive structured sales pitch.",
+        "leads": "Provide structured predictive lead scoring model.",
+        "insights": "Provide executive business insights with data-driven analysis."
+    }
 
-    Include:
-    - Market trends
-    - Opportunities
-    - Risks
-    - Competitive landscape
-    - Strategic recommendations
-    """
+    result = generate_ai(prompt, system_prompts.get(mode))
+    return jsonify({"response": result})
 
-    result = generate_ai_response(prompt)
-
-    return render_template('insights.html', result=result)
+@app.route("/")
+def home():
+    return render_template("dashboard.html")
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    print(app.url_map)   # optional debug
+    app.run(debug=True)   
+print(app.url_map)
