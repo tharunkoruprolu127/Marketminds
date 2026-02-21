@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Executive Dashboard{% endblock %}
+{% block content %}
+
+<div class="kpi-grid">
+    <div class="glass-card neon-accent">
+        <h3 class="gradient-title">Revenue Projection</h3>
+        <p class="kpi-value">+18.4%</p>
+    </div>
+
+    <div class="glass-card neon-accent">
+        <h3 class="gradient-title">Conversion Rate</h3>
+        <p class="kpi-value">12.7%</p>
+    </div>
+
+    <div class="glass-card neon-accent">
+        <h3 class="gradient-title">Lead Quality Score</h3>
+        <p class="kpi-value">82/100</p>
+    </div>
+
+    <div class="glass-card neon-accent">
+        <h3 class="gradient-title">Market Growth</h3>
+        <p class="kpi-value">+9.2%</p>
+    </div>
+</div>
+
+<div class="glass-panel">
+    <h2 class="section-heading">Quick AI Insights</h2>
+    <textarea id="dashboardInput" placeholder="Ask for executive insights..."></textarea>
+    <button onclick="generate('insights','dashboardInput')">Generate</button>
+</div>
+
+<div id="insightsOutput" class="card-grid"></div>
+
+{% endblock %}
