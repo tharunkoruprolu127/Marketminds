@@ -1,20 +1,12 @@
 {% extends "base.html" %}
+{% block title %}Business Insights{% endblock %}
 {% block content %}
 
-<div class="result-wrapper">
-    <div class="result-card">
-        <h2>📈 Market Insights Report</h2>
-
-        {% if result %}
-            <div class="ai-output">
-                <pre>{{ result }}</pre>
-            </div>
-        {% else %}
-            <p>No insights generated yet.</p>
-        {% endif %}
-
-        <a href="/" class="back-btn">⬅ Back</a>
-    </div>
+<div class="glass-panel">
+    <textarea id="insightInput" placeholder="Enter market or business scenario..."></textarea>
+    <button onclick="generate('insights','insightInput')">Generate Insights</button>
 </div>
+
+<div id="insightsOutput" class="card-grid"></div>
 
 {% endblock %}
